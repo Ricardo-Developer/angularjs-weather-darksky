@@ -10,4 +10,4 @@ _please use your own API it's free to get, if you're new to this, reading docume
 
 <hr>
 
-Weather icons from here [http://weathericons.io](http://weathericons.io)!
+Weather icons from here [WeatherIcons](https://erikflowers.github.io/weather-icons/)!
