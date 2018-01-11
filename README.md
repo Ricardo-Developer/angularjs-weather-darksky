@@ -1,6 +1,8 @@
-# AngularJS DarkSky Weather App
+# AngularJS DarkSky Weather App :partly_sunny:
 
 Simple app to consume an API, used to learn AngularJS
+
+**Atention this has no desing** :see_no_evil:
 
 [DarkSky Terms of Service](https://darksky.net/dev/docs/terms)
 
