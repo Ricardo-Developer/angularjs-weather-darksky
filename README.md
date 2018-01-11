@@ -2,7 +2,7 @@
 
 Simple app to consume an API, used to learn AngularJS
 
-**Atention this has no desing** :see_no_evil:
+**Atention no CSS** :see_no_evil:
 
 [DarkSky Terms of Service](https://darksky.net/dev/docs/terms)
 
