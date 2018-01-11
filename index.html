@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Teste AngularJS</title>
+	<link rel="stylesheet" type="text/css" href="weathericons/css/weather-icons.min.css">
+	<script src="js/angular.min.js"></script>
+	<script src="js/skycons.js"></script>
+</head>
+<body ng-app="appWeather" ng-controller="weatherController">
+	<form name="weatherForm" novalidate>
+		<p>Latitude</p>
+		<input type="text" name="latitude" ng-model="latitude" required>
+		<p>Longitude</p>
+		<input type="text" name="longitude" ng-model="longitude" required>
+		<br/>
+		<br/>
+		<button ng-disabled="weatherForm.latitude.$pristine || weatherForm.longitude.$pristine" ng-click="consultarTempo()">Consultar Tempo</button>
+	</form>
+
+	<br/>
+	<br/>
+	<br/>
+	<h4>Tempo neste momento:</h4>
+	<i class="wi {{tempoIcon}}" style="font-size: 101px;"></i>
+	<br/>
+	<p>Previsao: <span ng-bind="tempo"></span></p>
+	<p>Temperatura: <span ng-bind="tempF|number:2"></span> ºF | <span ng-bind="(tempC-32)*5/9 | number:2"></span> ºC</p>
+
+	<br/>
+	<h4>Previsão do tempo hora a hora</h4>
+	<table>
+		<tr>
+			<th>TIME</th>
+			<th>icon</th>
+			<th>Previsão</th>
+			<th>Temp ºF</th>
+			<th>Temp ºC</th>
+		<tr>
+		<tr ng-repeat="previsao in previsoes|orderBy:'-time'">
+			<td ng-bind="previsao.time | date:'HH:mm:ss Z'"></td>
+			<td><i class="wi {{previsao.icon | icontempo}}" style="font-size: 70px; margin:20px; "></i></td>
+			<td ng-bind="previsao.summary"></td>
+			<td ng-bind="previsao.temperature | number:2" style="text-align:center;"></td>
+			<td ng-bind="(previsao.temperature-32)*5/9 | number:1"style="text-align:center;"></td>
+		</tr>
+	</table>
+
+
+	<script>
+	var appWeather = angular.module('appWeather', []);
+
+	appWeather.filter('icontempo', function(){
+
+		return function(texto){
+			var icon ="";
+			switch (texto) {
+					case "clear-day":
+					icon = 'wi-day-sunny';
+					break;
+					case "clear-night":
+					icon = 'wi-night-clear';
+					break;
+					case "partly-cloudy-day":
+					icon = 'wi-day-cloudy';
+					break;
+					case "partly-cloudy-night":
+					icon = 'wi-night-partly-cloudy';
+					break;
+					case "cloudy":
+					icon = 'wi-cloudy';
+					break;
+					case "rain":
+					icon = 'wi-rain';
+					break;
+					case "sleet":
+					icon = 'sleet';
+					break;
+					case "snow":
+					icon = 'wi-snow';
+					break;
+					case "wind":
+					icon = 'wi-strong-wind';
+					break;
+					case "fog":
+					icon = 'wi-fog';
+					break;
+					default:
+
+				}
+
+				return icon;
+		}
+	});
+
+	appWeather.controller('weatherController', function($scope,$http)
+	{
+		$scope.consultarTempo = function()
+		{
+			var latitude = $scope.latitude;
+			var longitude = $scope.longitude;
+$scope.tempC = 0;
+
+
+			$http.get("https://api.darksky.net/forecast/0a3f067e3276310abc53aa0d5a0970ed/" + latitude + "," + longitude).then(function(response) {
+				
+				$scope.tempo = "";
+				$scope.tempo = response.data.currently.summary;
+				$scope.tempF = response.data.currently.temperature;
+				$scope.tempC = response.data.currently.temperature;
+
+				$scope.previsoes = response.data.hourly.data;
+
+				
+
+			switch (response.data.currently.icon) {
+					case "clear-day":
+					$scope.tempoIcon = 'wi-day-sunny';
+					break;
+					case "clear-night":
+					$scope.tempoIcon = 'wi-night-clear';
+					break;
+					case "partly-cloudy-day":
+					$scope.tempoIcon = 'wi-day-cloudy';
+					break;
+					case "partly-cloudy-night":
+					$scope.tempoIcon = 'wi-night-partly-cloudy';
+					break;
+					case "cloudy":
+					$scope.tempoIcon = 'wi-cloudy';
+					break;
+					case "rain":
+					$scope.tempoIcon = 'wi-rain';
+					break;
+					case "sleet":
+					$scope.tempoIcon = 'sleet';
+					break;
+					case "snow":
+					$scope.tempoIcon = 'wi-snow';
+					break;
+					case "wind":
+					$scope.tempoIcon = 'wi-strong-wind';
+					break;
+					case "fog":
+					$scope.tempoIcon = 'wi-fog';
+					break;
+					default:
+
+				}
+
+			});
+
+		}
+	});
+	</script>
+</body>
+</html>
